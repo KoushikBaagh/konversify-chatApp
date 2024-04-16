@@ -25,7 +25,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
-// --------------------------deployment------------------------------
+// --------------------------deployment------------------------------//
 
 const __dirname1 = __dirname;
 
@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
     res.send("HEY! API is running..");
   });
 }
-// --------------------------deployment------------------------------
+// --------------------------deployment------------------------------//
 
 // Error Handling middlewares
 app.use(notFound);
