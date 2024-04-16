@@ -9,20 +9,40 @@ const messageRoutes = require("./routes/messageRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
+const path = require("path");
+
 dotenv.config(); // dotenv is used to read .env file, but the important thing here is that it must be kept above all the code in the server.js file. Otherwise, it won't work connectDB();
 connectDB();
 const app = express();
 
 app.use(express.json()); // to accept json data
 
-app.get("/", (req, res) => {
-  res.send("API is running successfully");
-});
+// app.get("/", (req, res) => {
+//   res.send("API is running successfully");
+// });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
+// --------------------------deployment------------------------------
+
+const __dirname1 = __dirname;
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "../frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "../frontend/build/index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("HEY! API is running..");
+  });
+}
+// --------------------------deployment------------------------------
+
+// Error Handling middlewares
 app.use(notFound);
 app.use(errorHandler);
 
