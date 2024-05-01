@@ -1,6 +1,6 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import { Text, Box, IconButton } from "@chakra-ui/react";
+import React, { useEffect, useRef, useState } from "react";
+
+import { Text, Box, IconButton, Image } from "@chakra-ui/react";
 import { ChatState } from "../context/ChatProvider";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender, getSenderFull } from "../config/ChatLogics";
@@ -10,9 +10,15 @@ import { Spinner, useToast } from "@chakra-ui/react";
 import { FormControl } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/input";
 import axios from "axios";
-import { useEffect } from "react";
+
 import "./styles.css";
 import ScrollableChat from "./ScrollableChat";
+
+import { InputGroup } from "@chakra-ui/react";
+import { AttachmentIcon } from "@chakra-ui/icons";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { BsEmojiSmile } from "react-icons/bs";
 
 import Lottie from "react-lottie";
 import animationData from "../animations/typing Animation1-Lottie JSon.json";
@@ -161,6 +167,38 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
+  /////////////////////////////////////   Emoji Picker Logic   //////////////////////////////////////////
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (event.target.id !== "emoji-open") {
+        if (
+          emojiPickerRef.current &&
+          !emojiPickerRef.current.contains(event.target)
+        ) {
+          setShowEmojiPicker(false);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+  const handleEmojiModal = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleEmojiClick = (emoji) => {
+    setNewMessage((newMessage) => newMessage + emoji.native);
+  };
+  /////////////////////////////////////   Emoji Picker Logic   //////////////////////////////////////////
+
+  const fileInputAttach = useRef(); ////// file attachement refernce
+
   return (
     <>
       {selectedChat ? (
@@ -239,13 +277,52 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+
+              <InputGroup>
+                <IconButton
+                  aria-label="Attach a File"
+                  icon={<AttachmentIcon />}
+                  variant="filled"
+                  bg="#E0E0E0"
+                  onClick={() => fileInputAttach.current.click()}
+                />
+                <Input
+                  ref={fileInputAttach}
+                  type="file"
+                  variant="filled"
+                  bg="#E0E0E0"
+                  style={{ display: "none" }}
+                />
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                />
+
+                <IconButton
+                  aria-label="Add an Emoji"
+                  icon={
+                    <BsEmojiSmile
+                      title="Emoji"
+                      id="emoji-open"
+                      onClick={handleEmojiModal}
+                    />
+                  }
+                  variant="filled"
+                  bg="#E0E0E0"
+                />
+                {showEmojiPicker && (
+                  <div
+                    className="absolute bottom-24 left-16 z-40"
+                    display="flex"
+                    ref={emojiPickerRef}
+                  >
+                    <Picker data={data} onEmojiSelect={handleEmojiClick} />
+                  </div>
+                )}
+              </InputGroup>
             </FormControl>
           </Box>
         </>
