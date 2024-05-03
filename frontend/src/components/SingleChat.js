@@ -113,10 +113,52 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     });
   });
 
+  // const sendMessage = async (event) => {
+  //   if (event.key === "Enter" && newMessage) {
+  //     socket.emit("stop typing", selectedChat._id);
+  //     try {
+  //       const config = {
+  //         headers: {
+  //           "Content-type": "application/json",
+  //           Authorization: `Bearer ${user.token}`,
+  //         },
+  //       };
+  //       setNewMessage("");
+  //       const { data } = await axios.post(
+  //         "/api/message",
+  //         {
+  //           content: newMessage,
+  //           chatId: selectedChat,
+  //         },
+  //         config
+  //       );
+  //       console.log(data);
+  //       socket.emit("new message", data);
+  //       setMessages([...messages, data]);
+  //     } catch (error) {
+  //       toast({
+  //         title: "Error Occured!",
+  //         description: "Failed to send the Message",
+  //         status: "error",
+  //         duration: 5000,
+  //         isClosable: true,
+  //         position: "bottom",
+  //       });
+  //     }
+  //   }
+  // };
+
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if (event.key === "Enter" && newMessage.trim()) {
       socket.emit("stop typing", selectedChat._id);
       try {
+        let messageToSend = newMessage; // Keep the message as the file name initially
+
+        // Check if the message contains a file name and replace it with the file URL
+        if (file && newMessage.includes(file.name)) {
+          messageToSend = newMessage.replace(file.name, image); // Replace file name with image URL
+        }
+
         const config = {
           headers: {
             "Content-type": "application/json",
@@ -127,7 +169,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         const { data } = await axios.post(
           "/api/message",
           {
-            content: newMessage,
+            content: messageToSend, // Send the modified message
             chatId: selectedChat,
           },
           config
@@ -137,7 +179,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setMessages([...messages, data]);
       } catch (error) {
         toast({
-          title: "Error Occured!",
+          title: "Error Occurred!",
           description: "Failed to send the Message",
           status: "error",
           duration: 5000,
@@ -147,6 +189,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing Indicator Logic;
@@ -244,14 +287,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     [user.token, toast]
   );
 
-  /*   const uploadFile = useCallback(async (data) => {
-    try {
-      return await axios.post(`${ENDPOINT}/file/upload`, data);
-    } catch (error) {
-      console.log("Error while calling uploadFile API ", error);
-    }
-  }, []); // add dependencies if any
- */
   /////////// UPLOAD File Function ENDS here//////////
 
   useEffect(() => {
@@ -265,7 +300,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           let imageUrl = await uploadFile(data); // Capture the imageUrl returned by uploadFile
           console.log(imageUrl);
           setImage(imageUrl.data); // Store the imageUrl in state
-          setNewMessage((newMessage) => newMessage + " " + imageUrl.data);
+          //setNewMessage((newMessage) => newMessage + " " + imageUrl.data);
         } catch (error) {
           console.error("Failed to upload file:", error);
         }
@@ -278,8 +313,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     //alert("file uploaded");
     console.log(e);
     setFile(e.target.files[0]);
-    //setNewMessage((newMessage) => newMessage + " " + e.target.files[0].name);
-    setNewMessage((newMessage) => newMessage + " " + image);
+    setNewMessage((newMessage) => newMessage + " " + e.target.files[0].name);
+    //setNewMessage((newMessage) => newMessage + " " + image);
   };
 
   return (
