@@ -25,7 +25,12 @@ import Lottie from "react-lottie";
 import animationData from "../animations/typing Animation1-Lottie JSon.json";
 import io from "socket.io-client";
 
-const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+//require("dotenv").config();
+
+const ENDPOINT =
+  process.env.NODE_ENV === "production"
+    ? "https://konversify-chatapp.onrender.com"
+    : "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
