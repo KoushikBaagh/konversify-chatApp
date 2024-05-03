@@ -4,3 +4,13 @@
   overflow-y: scroll;
   scrollbar-width: none;
 }
+
+.pdf-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  padding: 1px;
+  border: none;
+  border-radius: 5px;
+  margin: 1px;
+}

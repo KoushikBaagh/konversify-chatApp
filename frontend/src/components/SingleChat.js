@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useRef, useState, useCallback } from "react";
 
 import { Text, Box, IconButton, Image } from "@chakra-ui/react";

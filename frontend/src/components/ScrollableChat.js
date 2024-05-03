@@ -1,5 +1,8 @@
 import React from "react";
 import ScrollableFeed from "react-scrollable-feed";
+// import { FaRegFilePdf } from "react-icons/fa6";
+// <FaRegFilePdf />
+import "./styles.css";
 import {
   isLastMessage,
   isSameSender,
@@ -11,6 +14,15 @@ import { ChatState } from "../context/ChatProvider";
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
+
+  // const formatTime24Hour = (timestamp) => {
+  //   const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+  //   let hours = date.getHours();
+  //   let minutes = date.getMinutes();
+  //   minutes = minutes < 10 ? "0" + minutes : minutes;
+  //   return hours + ":" + minutes;
+  // };
+
   return (
     <ScrollableFeed>
       {messages &&
@@ -41,7 +53,32 @@ const ScrollableChat = ({ messages }) => {
                 maxWidth: "75%",
               }}
             >
-              {m.content}
+              {m.content.endsWith(".pdf") ? (
+                <a href={m.content} download>
+                  <img
+                    className="pdf-icon"
+                    src="https://cdn-icons-png.flaticon.com/128/136/136522.png"
+                    alt="PDF"
+                  />
+                  <span>{m.content.split("/").pop().replace(/^\d+-/, "")}</span>
+                </a>
+              ) : m.content.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+                <a href={m.content} download>
+                  <img
+                    style={{
+                      width: 100,
+                      height: "100%",
+                      objectFit: "cover",
+                      padding: 1,
+                    }}
+                    src={m.text ? m.text : m.content}
+                    alt={m.text}
+                  />
+                </a>
+              ) : (
+                m.content
+              )}
+              {/* {m.content} */}
             </span>
           </div>
         ))}
