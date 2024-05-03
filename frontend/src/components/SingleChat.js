@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 
 import { Text, Box, IconButton, Image } from "@chakra-ui/react";
 import { ChatState } from "../context/ChatProvider";
@@ -23,6 +23,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing Animation1-Lottie JSon.json";
 import io from "socket.io-client";
+
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
@@ -167,7 +168,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
-  /////////////////////////////////////   Emoji Picker Logic   //////////////////////////////////////////
+  /////////////////////////////////////   Emoji Picker Logic STARTs here   //////////////////////////////////////////
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
 
@@ -195,9 +196,91 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const handleEmojiClick = (emoji) => {
     setNewMessage((newMessage) => newMessage + emoji.native);
   };
-  /////////////////////////////////////   Emoji Picker Logic   //////////////////////////////////////////
+  /////////////////////////////////////   Emoji Picker Logic ENDS here  //////////////////////////////////////////
 
-  const fileInputAttach = useRef(); ////// file attachement refernce
+  const [file, setFile] = useState();
+  const fileInputAttach = useRef();
+  const [image, setImage] = useState("");
+
+  /////////// UPLOAD File Function STARTs here //////////
+
+  const uploadFile = useCallback(
+    async (data) => {
+      try {
+        const config = {
+          headers: {
+            "Content-type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+
+        const response = await axios.post("/api/upload", data, config);
+
+        if (response.status === 200) {
+          toast({
+            title: "Success!",
+            description: "File uploaded successfully",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+          });
+          return response; // return the response
+        } else {
+          throw new Error("File upload failed");
+        }
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          description: "Failed to upload the file",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        throw error; // throw the error again
+      }
+    },
+    [user.token, toast]
+  );
+
+  /*   const uploadFile = useCallback(async (data) => {
+    try {
+      return await axios.post(`${ENDPOINT}/file/upload`, data);
+    } catch (error) {
+      console.log("Error while calling uploadFile API ", error);
+    }
+  }, []); // add dependencies if any
+ */
+  /////////// UPLOAD File Function ENDS here//////////
+
+  useEffect(() => {
+    const getImage = async () => {
+      if (file) {
+        const data = new FormData();
+        data.append("name", file.name);
+        data.append("file", file);
+
+        try {
+          let imageUrl = await uploadFile(data); // Capture the imageUrl returned by uploadFile
+          console.log(imageUrl);
+          setImage(imageUrl.data); // Store the imageUrl in state
+          setNewMessage((newMessage) => newMessage + " " + imageUrl.data);
+        } catch (error) {
+          console.error("Failed to upload file:", error);
+        }
+      }
+    };
+    getImage();
+  }, [file, uploadFile]);
+
+  const handleFileUpload = (e) => {
+    //alert("file uploaded");
+    console.log(e);
+    setFile(e.target.files[0]);
+    //setNewMessage((newMessage) => newMessage + " " + e.target.files[0].name);
+    setNewMessage((newMessage) => newMessage + " " + image);
+  };
 
   return (
     <>
@@ -289,6 +372,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <Input
                   ref={fileInputAttach}
                   type="file"
+                  multiple
+                  onChange={(e) => handleFileUpload(e)}
                   variant="filled"
                   bg="#E0E0E0"
                   style={{ display: "none" }}

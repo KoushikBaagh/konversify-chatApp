@@ -9,6 +9,8 @@ const messageRoutes = require("./routes/messageRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
+const route = require("./routes/route");
+
 const path = require("path");
 
 dotenv.config(); // dotenv is used to read .env file, but the important thing here is that it must be kept above all the code in the server.js file. Otherwise, it won't work connectDB();
@@ -24,8 +26,9 @@ app.use(express.json()); // to accept json data
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/", route);
 
-// --------------------------deployment------------------------------//
+/* // --------------------------deployment------------------------------//
 
 const __dirname1 = __dirname;
 
@@ -40,7 +43,7 @@ if (process.env.NODE_ENV === "production") {
     res.send("HEY! API is running..");
   });
 }
-// --------------------------deployment------------------------------//
+// --------------------------deployment------------------------------// */
 
 // Error Handling middlewares
 app.use(notFound);
