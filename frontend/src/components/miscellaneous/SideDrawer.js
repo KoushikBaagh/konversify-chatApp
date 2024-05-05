@@ -1,9 +1,23 @@
 /* eslint-disable */
-import { Box, Tooltip, useDisclosure, Input, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Tooltip,
+  useDisclosure,
+  Input,
+  useToast,
+  Image,
+  HStack,
+  Button,
+  Text,
+  Stack,
+  Avatar,
+  IconButton,
+  Spinner,
+} from "@chakra-ui/react";
 import React, { useCallback, useState } from "react";
-import { Button, Text } from "@chakra-ui/react";
+// import { Button, Text } from "@chakra-ui/react";
 import { BellIcon, PhoneIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { Avatar } from "@chakra-ui/react";
+//import { Avatar } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
@@ -11,9 +25,9 @@ import axios from "axios";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../useravatar/UserListItem";
 
-import { IconButton } from "@chakra-ui/react";
+// import { IconButton } from "@chakra-ui/react";
 
-import { Spinner } from "@chakra-ui/react";
+// import { Spinner } from "@chakra-ui/react";
 
 import {
   Menu,
@@ -148,9 +162,16 @@ const SideDrawer = () => {
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans" fontWeight={"bold"}>
-          Konversify ChatBox
-        </Text>
+        <HStack spacing={3}>
+          <Text fontSize="2xl" fontFamily="Work sans" fontWeight={"bold"}>
+            Konversify ✘ BIT Mesra
+          </Text>
+          <Image
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/Birla_Institute_of_Technology_Mesra.png/220px-Birla_Institute_of_Technology_Mesra.png"
+            boxSize="50px"
+            bg="transparent"
+          />
+        </HStack>
 
         <div>
           {/*Next Part Video Calling with Menu */}
@@ -160,7 +181,12 @@ const SideDrawer = () => {
                 rightIcon={<ChevronDownIcon />}
                 bg="transparent"
                 aria-label="Call"
-                icon={<PhoneIcon />}
+                icon={
+                  <Image
+                    src="https://cdn-icons-png.flaticon.com/128/4945/4945907.png"
+                    boxSize="24px"
+                  />
+                }
               />
             </MenuButton>
             <MenuList>

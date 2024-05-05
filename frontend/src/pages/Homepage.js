@@ -77,7 +77,13 @@ const Homepage = () => {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <text fontSize="4xl" fontFamily="Roboto" fontWeight="bold">
+        <text
+          style={{
+            fontSize: "4xl",
+            fontFamily: "Roboto",
+            fontWeight: "bold",
+          }}
+        >
           Konversify APP
         </text>
       </Box>

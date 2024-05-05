@@ -44,6 +44,18 @@ const Signup = () => {
       setLoading(false);
       return;
     }
+    if (!email.endsWith("@bitmesra.ac.in")) {
+      toast({
+        title: "Invalid Email",
+        description: "Email should end with bitmesra.ac.in",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
     if (password !== confirmpassword) {
       toast({
         title: "Passwords Do Not Match",
@@ -54,7 +66,7 @@ const Signup = () => {
       });
       return;
     }
-    console.log(name, email, password, pic); // comment this line later
+    //console.log(name, email, password, pic); // comment this line later
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = axios.post(
