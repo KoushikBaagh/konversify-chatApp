@@ -155,7 +155,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   // };
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage.trim()) {
+    // Check if the event is a click event on the "send button" or an "Enter" key is pressed
+    if (
+      (event.currentTarget.className.includes("send-button") &&
+        newMessage.trim()) ||
+      (event.key === "Enter" && newMessage.trim())
+    ) {
       socket.emit("stop typing", selectedChat._id);
       try {
         let messageToSend = newMessage; // Keep the message as the file name initially
@@ -448,6 +453,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     <Picker data={data} onEmojiSelect={handleEmojiClick} />
                   </div>
                 )}
+                <IconButton
+                  className="send-button"
+                  aria-label="Send Message Icon"
+                  icon={
+                    <Image
+                      src="https://cdn-icons-png.flaticon.com/128/10426/10426419.png"
+                      boxSize="24px"
+                    />
+                  }
+                  variant="filled"
+                  bg="#E0E0E0"
+                  onClick={sendMessage}
+                />
               </InputGroup>
             </FormControl>
           </Box>
