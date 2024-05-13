@@ -149,7 +149,7 @@ const Signup = () => {
   };
 
   return (
-    <VStack spacing="5px" padding="10px" color={"black"}>
+    <VStack spacing="5px" padding="10px" color={"white"}>
       {/* Name Part */}
       <FormControl id="first-name" isRequired>
         <FormLabel>Name</FormLabel>
@@ -157,6 +157,7 @@ const Signup = () => {
         <Input
           placeholder="Enter Your Name"
           onChange={(e) => setName(e.target.value)}
+          // _placeholder={{ color: "whitesmoke" }} //giving placeholder color
         />
       </FormControl>
       {/* Email Part */}
