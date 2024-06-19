@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.9baab426.css",
-    "main.js": "/static/js/main.84cd2202.js",
+    "main.js": "/static/js/main.9c8698d1.js",
     "static/media/BIT Mesra - banner.png": "/static/media/BIT Mesra - banner.de1810ac41fe10dca2bd.png",
     "static/media/BIT-Mesra-Alumni-LOGO.png": "/static/media/BIT-Mesra-Alumni-LOGO.c298a529c428a37b900e.png",
     "static/media/brand-logo.png": "/static/media/brand-logo.7306832e9ae88619336a.png",
     "index.html": "/index.html",
     "main.9baab426.css.map": "/static/css/main.9baab426.css.map",
-    "main.84cd2202.js.map": "/static/js/main.84cd2202.js.map"
+    "main.9c8698d1.js.map": "/static/js/main.9c8698d1.js.map"
   },
   "entrypoints": [
     "static/css/main.9baab426.css",
-    "static/js/main.84cd2202.js"
+    "static/js/main.9c8698d1.js"
   ]
 }

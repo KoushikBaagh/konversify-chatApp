@@ -29,7 +29,7 @@ import io from "socket.io-client";
 
 const ENDPOINT =
   process.env.NODE_ENV === "production"
-    ? "https://konversify-chatapp.onrender.com"
+    ? "https://konversify-x-bit-mesra.onrender.com"
     : "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
@@ -118,41 +118,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
-
-  // const sendMessage = async (event) => {
-  //   if (event.key === "Enter" && newMessage) {
-  //     socket.emit("stop typing", selectedChat._id);
-  //     try {
-  //       const config = {
-  //         headers: {
-  //           "Content-type": "application/json",
-  //           Authorization: `Bearer ${user.token}`,
-  //         },
-  //       };
-  //       setNewMessage("");
-  //       const { data } = await axios.post(
-  //         "/api/message",
-  //         {
-  //           content: newMessage,
-  //           chatId: selectedChat,
-  //         },
-  //         config
-  //       );
-  //       console.log(data);
-  //       socket.emit("new message", data);
-  //       setMessages([...messages, data]);
-  //     } catch (error) {
-  //       toast({
-  //         title: "Error Occured!",
-  //         description: "Failed to send the Message",
-  //         status: "error",
-  //         duration: 5000,
-  //         isClosable: true,
-  //         position: "bottom",
-  //       });
-  //     }
-  //   }
-  // };
 
   const sendMessage = async (event) => {
     // Check if the event is a click event on the "send button" or an "Enter" key is pressed

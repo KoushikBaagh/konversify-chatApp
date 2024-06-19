@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
@@ -9,8 +7,10 @@ const Roompage = () => {
 
   useEffect(() => {
     const myMeeting = async () => {
-      const appID = 1808274551;
-      const serverSecret = "a011c088f89e0d94b85f2a7857bfe725";
+      // const appID = 460228071;
+      // const serverSecret = "88e1f41bbfec5283bdbdb3929e73350d";
+      const appID = Number(process.env.REACT_APP_ZEGOCLOUD_appID);
+      const serverSecret = process.env.REACT_APP_ZEGOCLOUD_serverSecret;
       const placeholder = "Enter Your Name";
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
         appID,
